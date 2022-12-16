@@ -2,10 +2,8 @@ package br.com.totvs.reportgenerator.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import org.springframework.stereotype.Component;
@@ -13,35 +11,60 @@ import org.springframework.stereotype.Component;
 @Component
 public class DateUtil {
 
-    public LocalDate dateFormatter(String date) throws ParseException {
-        LocalDate localDate = LocalDate.parse(new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy")
-                .format(new SimpleDateFormat("dd/MM/yyy", Locale.US).parse(date)));
+    public int calcDaysToFinishTask(String dateCreated, String dateResolved) {
 
-        return  localDate;
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+
+            Date dateStart = dateFormat.parse(dateCreated);
+            Date dateEnd = dateFormat.parse(dateResolved);
+            System.out.println(dateStart);
+            System.out.println(dateEnd);
+
+            Calendar calendarStart = Calendar.getInstance();
+            calendarStart.setTime(dateStart);
+            calendarStart.set(Calendar.HOUR, 0);
+            calendarStart.set(Calendar.MINUTE, 0);
+            calendarStart.set(Calendar.SECOND, 0);
+            calendarStart.set(Calendar.MILLISECOND, 0);
+
+            Calendar calendarEnd = Calendar.getInstance();
+            calendarEnd.setTime(dateEnd);
+            calendarEnd.set(Calendar.HOUR, 0);
+            calendarEnd.set(Calendar.MINUTE, 0);
+            calendarEnd.set(Calendar.SECOND, 0);
+            calendarEnd.set(Calendar.MILLISECOND, 0);
+
+            int workingDays = 0;
+
+            while (!calendarStart.after(calendarEnd)) {
+                if (calendarStart.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && calendarStart.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+                    workingDays += 1;
+                }
+                calendarStart.add(Calendar.DATE, 1);
+            }
+            return workingDays;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
-    public int calcDaysToFinishTask (String dateCreated, String dateResolved){
+    public String getDateNow() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+        Date date = new Date();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE MMM d HH:mm:ss zzz yyyy", Locale.US);
-        LocalDate dateStart = LocalDate.parse(dateCreated, formatter);
-        LocalDate dateEnd = LocalDate.parse(dateResolved, formatter);
-        System.out.println(dateStart);
-        System.out.println(dateEnd);
+        return dateFormat.format(date);
+    }
 
-        long days = ChronoUnit.DAYS.between(dateStart, dateEnd);
-        System.out.println(days);
-
-        int workingDays = 0;
-
-        Calendar calendar = Calendar.getInstance();
-        for (int i = 1; i < days ; i++) {
-            calendar.add(Calendar.DATE, 1);
-            if(calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY){
-                workingDays +=1;
-            }
+    public String calcDeliveryTimeStatus(String timeSpend, String storyPoints, String status) {
+        double goalTime = Double.valueOf(storyPoints).doubleValue();
+        double realTime = Double.valueOf(timeSpend).doubleValue();
+        if (realTime > goalTime) {
+            return "LATE";
+        } else {
+            return "IN_TIME";
         }
-        return workingDays;
-
     }
 
 }

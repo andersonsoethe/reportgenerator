@@ -1,7 +1,6 @@
 package br.com.totvs.reportgenerator.model;
 
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +16,6 @@ public class Report {
     private long id;
     private String issueType;
     private String priority;
-    @Column(name = "issue_key")
     private String issueKey;
     private String summary;
     private String status;
@@ -30,14 +28,14 @@ public class Report {
     private String created;
     private String resolved;
     private String timeSpend;
-    @Column(name = "days_to_finish")
+    private String deliveryTimeStatus;
     private long daysToFinish;
 
     public Report(){
 
     }
 
-    public Report(String issueType, String priority, String issueKey, String summary, String status, String ticket, String assignee, String reporter, String demandProfile, String deliveryAgreementDate, String storyPoints, String created, String resolved, String timeSpend) {
+    public Report(String issueType, String priority, String issueKey, String summary, String status, String ticket, String assignee, String reporter, String demandProfile, String deliveryAgreementDate, String storyPoints, String created, String resolved, String timeSpend, String deliveryTimeStatus) {
         this.issueType = issueType;
         this.priority = priority;
         this.issueKey = issueKey;
@@ -52,6 +50,7 @@ public class Report {
         this.created = created;
         this.resolved = resolved;
         this.timeSpend = timeSpend;
+        this.deliveryTimeStatus = deliveryTimeStatus;
     }
 
 
@@ -176,6 +175,14 @@ public class Report {
         this.timeSpend = timeSpend;
     }
 
+    public String getDeliveryTimeStatus() {
+        return deliveryTimeStatus;
+    }
+
+    public void setDeliveryTimeStatus(String deliveryTimeStatus) {
+        this.deliveryTimeStatus = deliveryTimeStatus;
+    }
+
     public long getDaysToFinish() {
         return daysToFinish;
     }
@@ -203,6 +210,8 @@ public class Report {
                 ", resolved='" + resolved + '\'' +
                 ", timeSpend='" + timeSpend + '\'' +
                 ", daysToFinish='" + daysToFinish + '\'' +
+                ", deliveryTimeStatus='" + deliveryTimeStatus + '\'' +
+
                 '}';
     }
 }

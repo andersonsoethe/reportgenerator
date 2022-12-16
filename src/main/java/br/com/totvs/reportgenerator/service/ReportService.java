@@ -68,13 +68,21 @@ public class ReportService {
                 report.setAssignee(row.getCell(cellNumber++).getStringCellValue());
                 report.setReporter(row.getCell(cellNumber++).getStringCellValue());
                 //Dia da entrega
-                report.setResolved((String.valueOf(row.getCell(cellNumber++).getDateCellValue())));
+                if(row.getCell(cellNumber).getDateCellValue() == null) {
+                    report.setResolved(dateUtil.getDateNow());
+                } else {
+                    report.setResolved((String.valueOf(row.getCell(cellNumber++).getDateCellValue())));
+                }
                 report.setTimeSpend(String.valueOf(row.getCell(cellNumber++).getNumericCellValue()));
                 report.setDemandProfile(row.getCell(cellNumber++).getStringCellValue());
                 report.setDeliveryAgreementDate(row.getCell(cellNumber++).getStringCellValue());
                 report.setStoryPoints(String.valueOf(row.getCell(cellNumber).getNumericCellValue()));
                 report.setDaysToFinish(dateUtil.calcDaysToFinishTask(report.getCreated(), report.getResolved()));
+                if (report.getStatus() == "Concluído"){
+
+                }
                 reportRepository.save(report);
+                //Calcular o Status
                 System.out.println(report.getIssueKey()+" | "+report.getDaysToFinish());
             }
         } catch (Exception e) {
