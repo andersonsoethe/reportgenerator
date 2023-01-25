@@ -1,7 +1,10 @@
 package br.com.totvs.reportgenerator.model;
 
+import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +17,7 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    private Integer daysToFinish;
     private String issueType;
     private String priority;
     private String issueKey;
@@ -25,34 +29,11 @@ public class Report {
     private String demandProfile;
     private String deliveryAgreementDate;
     private String storyPoints;
-    private String created;
-    private String resolved;
     private String timeSpend;
-    private String deliveryTimeStatus;
-    private long daysToFinish;
-
-    public Report(){
-
-    }
-
-    public Report(String issueType, String priority, String issueKey, String summary, String status, String ticket, String assignee, String reporter, String demandProfile, String deliveryAgreementDate, String storyPoints, String created, String resolved, String timeSpend, String deliveryTimeStatus) {
-        this.issueType = issueType;
-        this.priority = priority;
-        this.issueKey = issueKey;
-        this.summary = summary;
-        this.status = status;
-        this.ticket = ticket;
-        this.assignee = assignee;
-        this.reporter = reporter;
-        this.demandProfile = demandProfile;
-        this.deliveryAgreementDate = deliveryAgreementDate;
-        this.storyPoints = storyPoints;
-        this.created = created;
-        this.resolved = resolved;
-        this.timeSpend = timeSpend;
-        this.deliveryTimeStatus = deliveryTimeStatus;
-    }
-
+    private Date created;
+    private Date resolved;
+    @Enumerated(EnumType.STRING)
+    private DeliveryTimeStatusEnum deliveryTimeStatus;
 
     public long getId() {
         return id;
@@ -150,19 +131,19 @@ public class Report {
         this.storyPoints = storyPoints;
     }
 
-    public String getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
-    public String getResolved() {
+    public Date getResolved() {
         return resolved;
     }
 
-    public void setResolved(String resolved) {
+    public void setResolved(Date resolved) {
         this.resolved = resolved;
     }
 
@@ -175,19 +156,19 @@ public class Report {
         this.timeSpend = timeSpend;
     }
 
-    public String getDeliveryTimeStatus() {
+    public DeliveryTimeStatusEnum getDeliveryTimeStatus() {
         return deliveryTimeStatus;
     }
 
-    public void setDeliveryTimeStatus(String deliveryTimeStatus) {
+    public void setDeliveryTimeStatus(DeliveryTimeStatusEnum deliveryTimeStatus) {
         this.deliveryTimeStatus = deliveryTimeStatus;
     }
 
-    public long getDaysToFinish() {
+    public Integer getDaysToFinish() {
         return daysToFinish;
     }
 
-    public void setDaysToFinish(long daysToFinish) {
+    public void setDaysToFinish(Integer daysToFinish) {
         this.daysToFinish = daysToFinish;
     }
 
@@ -211,9 +192,6 @@ public class Report {
                 ", timeSpend='" + timeSpend + '\'' +
                 ", daysToFinish='" + daysToFinish + '\'' +
                 ", deliveryTimeStatus='" + deliveryTimeStatus + '\'' +
-
                 '}';
     }
 }
-
-

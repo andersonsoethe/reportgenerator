@@ -1,0 +1,100 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reports</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="jumbotron mb-0">
+        <h1 class="display-4">Lista de Chamados</h1>
+    </div>
+    <nav class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="/reports">Todos</a>
+            <a class="nav-item nav-link" href="/reports/IN_TIME">In Time</a>
+            <a class="nav-item nav-link" href="/reports/LATE">Late</a>
+            <a class="nav-item nav-link" href="/reports/IN_PROGRESS">In Progress</a>
+            <a class="nav-item nav-link" href="/reports/CANCELED">Canceled</a>
+        </div>
+        <a href="/upload">
+            <button class="btn btn-outline-secondary my-2 my-sm-0"> Upload</button>
+        </a>
+    </nav>
+    <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
+</div>
+<div class="container-fluid flex p-3 my-2">
+    <br />
+    <div class="row">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Issue Type</th>
+                <th>Priority</th>
+                <th>Key</th>
+                <th>Summary</th>
+                <th>Created</th>
+                <th>Status</th>
+                <th>Status do Tempo de Entrega</th>
+                <th>Dias para Finalizar</th>
+                <th>Ticket</th>
+                <th>Assignee</th>
+                <th>Reportes</th>
+                <th>Resolved</th>
+                <th>Time Spent</th>
+                <th>Perfil da Demanda</th>
+                <th>Data Acordo Entrega</th>
+                <th>Story Points</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="report, iStat : ${reportPage.content}">
+                <td th:text="${report.id}"></td>
+                <td th:text="${report.issueType}"></td>
+                <td th:text="${report.priority}"></td>
+                <td th:text="${report.issueKey}"></td>
+                <td th:text="${report.summary}"></td>
+                <td th:text="${report.created}"></td>
+                <td th:text="${report.status}"></td>
+                <td th:text="${report.deliveryTimeStatus.description}"></td>
+                <td th:text="${report.daysToFinish}"></td>
+                <td th:text="${report.ticket}"></td>
+                <td th:text="${report.assignee}"></td>
+                <td th:text="${report.reporter}"></td>
+                <td th:text="${report.resolved}"></td>
+                <td th:text="${report.timeSpend}"></td>
+                <td th:text="${report.demandProfile}"></td>
+                <td th:text="${report.deliveryAgreementDate}"></td>
+                <td th:text="${report.storyPoints}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" th:classappend="${currentPage==1} ? visually-hidden"
+               th:href="@{'/reports/'+${deliveryTimeStatusFilter == null ? '' : deliveryTimeStatusFilter}(size=${reportPage.size}, page=${currentPage-1})}"
+            >Anterior</a>
+        </li>
+        <div th:if="${reportPage.totalPages > 0}"
+             th:each="pageNumber : ${pageNumbers}">
+            <li class="page-item">
+                <a class="page-link"
+                   th:href="@{'/reports/'+${deliveryTimeStatusFilter == null ? '' : deliveryTimeStatusFilter}(size=${reportPage.size}, page=${pageNumber})}"
+                   th:text=${pageNumber}
+                   th:classappend="${pageNumber==reportPage.number + 1} ? active"></a>
+            </li>
+        </div>
+        <li class="page-item">
+            <a class="page-link" th:classappend="${currentPage==reportPage.totalPages} ? visually-hidden"
+               th:href="@{'/reports/'+${deliveryTimeStatusFilter == null ? '' : deliveryTimeStatusFilter}(size=${reportPage.size}, page=${currentPage+1})}"
+            >Proximo</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

@@ -3,14 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Upload</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
-    <body>
-    <div>
-            <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
-                <label for="file"> Choose the File to upload: </label> <br/><br/>
-                <input type="file" name="file" id="file"/> <br/><br/>
-                <button type="submit">Save</button>
-            </form>
+<body>
+<div class="container-fluid">
+    <div class="jumbotron mb-0">
+        <h1 class="display-4">Upload de Arquivos</h1>
     </div>
-    </body>
+    <nav class="navbar navbar-expand navbar-light bg-light d-flex justify-content-between">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="/reports">Report</a>
+        </div>
+    </nav>
+</div>
+<div class="container">
+    <form th:action="@{/upload}" method="post" enctype="multipart/form-data" class="was-validated">
+        <label class="form-label" for="file"> Selecione um arquivo: </label> <br/><br/>
+        <input class="form-control" type="file" accept=".xls" name="file" id="file" required /> <br/><br/>
+        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Enviar</button> <br/><br/>
+    </form>
+    <div class="my-2 my-sm-0" th:if="${message}" th:text="${message}" th:classappend="${'alert ' + alertClass}"></div>
+</div>
+</body>
 </html>

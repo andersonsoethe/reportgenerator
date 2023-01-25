@@ -3,11 +3,11 @@ package br.com.totvs.reportgenerator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
 import br.com.totvs.reportgenerator.controller.UploadController;
 
-
-
+@EnableCaching
 @SpringBootApplication
 public class ReportgeneratorApplication implements CommandLineRunner {
 
@@ -23,6 +23,5 @@ public class ReportgeneratorApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-
 	}
 }
